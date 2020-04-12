@@ -1,0 +1,228 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+struct staff
+{
+    char name[10];                /*名字*/
+	char id[10];                  /*工号*/
+	int firstMoney;               /*第一季度销售额*/
+	int secondMoney;              /*第二季度销售额*/
+	int thirdMoney;               /*第三季度销售额*/
+	int fourthMoney;              /*第四季度销售额*/
+    int money;                    /*总销售额*/
+    int reward;                   /*奖金*/
+};
+
+struct node
+{
+    struct staff date;
+	struct node*next;
+};
+
+struct node*createList()  /*创建链表*/
+{
+    struct node*headnode=(struct node*)malloc(sizeof(struct node));
+	headnode->next=NULL;
+	return headnode;
+}
+
+struct node*createnode(struct staff date)/*创建节点*/
+{
+    struct node*newnode=(struct node*)malloc(sizeof(struct node));
+	newnode->date=date;
+	newnode->next=NULL;
+	return newnode;
+}
+
+void printList(struct node*headnode)/*统计*/
+{
+	struct node*pMove=headnode->next;
+	printf("姓名\t工号\t第一季度销售额\t\t第二季度销售额\t\t第三季度销售额\t\t第四季度销售额\t总销售额\n");
+	while(pMove)
+	{
+	    printf("%s\t%s\t%d\t\t\t%d\t\t\t%d\t\t\t%d\t    \t%d\n",pMove->date.name,pMove->date.id,pMove->date.firstMoney,pMove->date.secondMoney,pMove->date.thirdMoney,pMove->date.fourthMoney,pMove->date.money);
+		pMove=pMove->next;
+	}
+    printf("\n");
+}
+
+void printList2(struct node*headnode)/*奖金发放*/
+{
+	struct node*pMove=headnode->next;
+	printf("姓名\t奖金\n");
+	while(pMove)
+	{
+	    printf("%s\t%d\n",pMove->date.name,pMove->date.reward);
+		pMove=pMove->next;
+	}
+    printf("\n");
+}
+
+void insertnodeByHead(struct node*headnode,struct staff date)   /*系统初始化*/
+{
+    struct node*newnode=createnode(date);
+	newnode->next=headnode->next;
+	headnode->next=newnode;
+}
+
+struct node*searchnodeByAppoinId(struct node*headnode,char*id)/*根据工号查找修改*/
+{
+    struct node*pMove=headnode->next;
+	if(pMove==NULL)
+		return NULL;
+	else
+	{
+	    while(strcmp(pMove->date.id,id))
+		{
+			pMove=pMove->next;
+		}
+		return pMove;
+    }
+	
+}
+
+void readInfoFromFile(struct node*headnode,char*filename)/*读文件*/
+{
+	FILE*fp;
+	struct staff date;
+	fp=fopen(filename,"r");
+	if(fp==NULL)
+	{
+		fp=fopen(filename,"w+");
+	}
+	while(fscanf(fp,"%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n",date.name,date.id,&date.firstMoney,&date.secondMoney,&date.thirdMoney,&date.fourthMoney,&date.money,&date.reward)!=EOF)
+	{
+	    insertnodeByHead(headnode,date);
+	}
+    fclose(fp);
+}
+
+void writeInfoToFile(struct node*headnode,char*filename)/*写文件*/
+{
+	FILE*fp;
+	fp=fopen(filename,"w");
+  	struct	node*pMove=headnode->next;
+  	while(pMove)
+  	{
+  		fprintf(fp,"%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n",pMove->date.name,pMove->date.id,pMove->date.firstMoney,pMove->date.secondMoney,pMove->date.thirdMoney,pMove->date.fourthMoney,pMove->date.money,pMove->date.reward);
+		pMove=pMove->next;
+    }
+    fclose(fp);
+}
+
+void menu()       /*菜单函数*/     
+{
+    printf("--------------【销售额及奖金发放系统】-----------\n");
+	printf("\t\t1.系统初始化\n");
+    printf("\t\t2.员工销售额输入\n");
+	printf("\t\t3.数据修改\n");
+	printf("\t\t4.统计\n");
+	printf("\t\t5.奖金发放\n");
+	printf("\t\t6.退出程序\n");
+	printf("-------------------------------------------------\n");
+	printf("请输入1~6：");
+}
+
+struct node*list=createList();
+
+void keyDown()/*跳转函数*/
+{
+    int userKey;
+	struct staff date;  /*临时变量*/
+    struct node*pMove=NULL;
+	scanf("%d",&userKey);
+	switch(userKey)
+    {
+	    case 1:
+			printf("\t系统初始化\n");
+            printf("请输入姓名与工号：");
+			scanf("%s%s",date.name,date.id);
+			insertnodeByHead(list,date);
+			break;
+		case 2:
+			printf("\t员工销售额输入\n");
+            printf("请输入工号：");
+            scanf("%s",date.id);
+			if(searchnodeByAppoinId(list,date.id)==NULL)
+			    printf("未找到相关信息");
+			else
+			{	
+			
+				struct node*curnode=searchnodeByAppoinId(list,date.id);
+				printf("请分别输入该员工四季度销售额");
+				scanf("%d%d%d%d",&curnode->date.firstMoney,&curnode->date.secondMoney,&curnode->date.thirdMoney,&curnode->date.fourthMoney);
+                curnode->date.money=curnode->date.firstMoney+curnode->date.secondMoney+curnode->date.thirdMoney+curnode->date.fourthMoney;
+			    if(curnode->date.money<=1000000)
+			        curnode->date.reward=curnode->date.money*0.1;
+		        else if(curnode->date.money<=1500000)
+			        curnode->date.reward=curnode->date.money*0.11;
+		        else if(curnode->date.money<=2000000)
+			        curnode->date.reward=curnode->date.money*0.12;
+		        else if(curnode->date.money<=2500000)
+			        curnode->date.reward=curnode->date.money*0.13;
+		        else if(curnode->date.money<=3000000)
+			        curnode->date.reward=curnode->date.money*0.14;
+		        else
+			        curnode->date.reward=curnode->date.money*0.15;
+			}
+            break;
+		case 3:
+			printf("\t数据修改\n");
+			printf("请输入工号：");
+            scanf("%s",date.id);
+			if(searchnodeByAppoinId(list,date.id)==NULL)
+			    printf("未找到相关信息");
+			else
+			{	
+				struct node*curnode=searchnodeByAppoinId(list,date.id);
+				printf("请输入该员工姓名，工号，四季度销售额");
+				scanf("%s%s%d%d%d%d",curnode->date.name,curnode->date.id,&curnode->date.firstMoney,&curnode->date.secondMoney,&curnode->date.thirdMoney,&curnode->date.fourthMoney);
+                curnode->date.money=curnode->date.firstMoney+curnode->date.secondMoney+curnode->date.thirdMoney+curnode->date.fourthMoney;
+			    if(curnode->date.money<=1000000)
+			        curnode->date.reward=curnode->date.money*0.1;
+		        else if(curnode->date.money<=1500000)
+			        curnode->date.reward=curnode->date.money*0.11;
+		        else if(curnode->date.money<=2000000)
+			        curnode->date.reward=curnode->date.money*0.12;
+		        else if(curnode->date.money<=2500000)
+			        curnode->date.reward=curnode->date.money*0.13;
+		        else if(curnode->date.money<=3000000)
+			        curnode->date.reward=curnode->date.money*0.14;
+		        else
+			        curnode->date.reward=curnode->date.money*0.15;
+			}
+
+			break;
+		case 4:
+			printf("\t统计\n");
+			printList(list);
+            break;
+		case 5:
+			printf("\t奖金发放\n");
+		    printList2(list);
+			break;
+		case 6:
+			printf("\t退出程序\n");
+			system("pause");
+			exit(0);
+		 
+		default:
+			printf("输入错误！请重新输入\n");
+	}
+    writeInfoToFile(list,"staff.txt");
+}
+
+
+int main()
+{
+	readInfoFromFile(list,"staff.txt");
+	while(1)
+	{
+	    menu();
+		keyDown();
+		system("pause");
+		system("cls");
+	}
+	system("pause");
+	return 0;
+}
