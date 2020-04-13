@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include <time.h>
+void main()
+{
+int b,i=1;
+int a;
+srand((unsigned)time(NULL));
+a = rand()%101;
+printf("请输入0~100之间的一个数");
+ for(i=0;i<11;i++)
+ {
+  scanf("%d",&b);
+  if(b==a)
+  {
+	  printf("恭喜你，猜对了！");
+  break;
+  }
+  else 
+   if(b<a)
+    printf("偏小\n");
+   else 
+    if(b>a)
+     printf("偏大\n");
+  }
+}
