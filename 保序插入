@@ -1,0 +1,26 @@
+#include <stdio.h>
+void main()
+{
+    int a[11];
+    int i,k,x;
+    printf("请您输入一个数组中的10个数字:\n");
+    for(i=0;i<10;i++)
+       scanf("%d",&a[i]);
+
+    printf("请您输入一个要插入的数字:\n");
+    scanf("%d",&x);
+    for(i=0;i<10;i++)
+	{
+       if(x<a[i])   
+       break;
+	}
+
+    k=i;       
+    for(i=9;i>=k;i--)
+	{                    
+        a[i+1]=a[i];
+	}
+    a[k]=x;                    
+    for(i=0;i<=10;i++)
+       printf("%d ",a[i]);
+}
