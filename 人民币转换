@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <math.h>
+void main()
+{
+float s,j;
+int i,q,g;
+printf("请输入钱数：\n");
+char *a[]={"壹","贰","叁","肆","伍","陆","柒","捌","玖"};
+char *b[]={"元","十","百","千","万"};
+char *d[]={"角","分"};
+scanf("%f",&s);
+s=s+0.003;
+for(i=8;i>0;i--)
+{j=s/pow(10,i);
+if(j!=0)
+break;
+}
+for(q=i-1;q>=0;q--)
+{j=s/pow(10,q);
+g=(int)j%10;
+if(g!=0)
+printf("%s%s",a[g-1],b[q]);}
+for(q=-1;q>=-2;q--)
+{
+j=s/pow(10,q);
+g=(int)j%10;
+if(g!=0)
+printf("%s%s",a[g-1],d[-q-1]);}
+}
+
