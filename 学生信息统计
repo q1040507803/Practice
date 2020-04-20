@@ -1,0 +1,46 @@
+#include <stdio.h>
+int max(int a,int b)
+{
+	int z;
+	if(a>=b) z=a;
+	else z=b;
+	return (z);
+}
+int main()
+{
+	typedef struct
+	{
+		char name[10];
+		int num;
+		int score;
+	}student;
+	student stu[3];
+	student *p;
+	int i=1;
+	int total=0;
+	for(p=stu;p<stu+3;p++,i++)
+	{
+		printf("请输入第%d名学生的姓名:",i);
+		scanf("%s",&p->name);
+		printf("请输入第%d名学生的学号:",i);
+		scanf("%d",&p->num);
+		printf("请输入第%d名学生的成绩:",i);
+		scanf("%d",&p->score);
+		total=total+p->score;
+	}
+	printf("平均成绩为:%d\n",total/3);
+	int m;
+	m=max(stu[0].score,stu[1].score);
+	m=max(m,stu[2].score);
+	printf("最高学生成绩的信息:\n");
+	if(m==stu[0].score)
+		printf("%s\n%d\n%d\n",stu[0].name,stu[0].num,stu[0].score);
+	if(m==stu[1].score)
+		printf("%s\n%d\n%d\n",stu[1].name,stu[1].num,stu[1].score);
+	if(m==stu[2].score)
+		printf("%s\n%d\n%d\n",stu[2].name,stu[2].num,stu[2].score);
+	printf("所有学生的信息:\n");
+	for(p=stu;p<stu+3;p++)
+		printf("\n%s\n%d\n%d\n",p->name,p->num,p->score);
+	return 0;
+}
