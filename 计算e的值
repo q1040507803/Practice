@@ -1,0 +1,13 @@
+#include <stdio.h>
+void main()
+{
+  double sum=1.0,nfactorial=1.0;
+  int k=1;
+  while(nfactorial>1.0E-6)
+  {
+    nfactorial/=k;
+	sum+=nfactorial;
+	++k;
+  }
+  printf("\n%lf",sum);
+} 
