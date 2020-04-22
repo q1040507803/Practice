@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<math.h>
+#include<float.h>
+void main()
+{
+double a,b,c;
+double delta;
+double x1,x2;
+printf("请输入a,b,c:");
+scanf("%lf %lf %lf",&a,&b,&c);
+if(fabs(a)<FLT_EPSILON)
+{
+  if(fabs(b)<FLT_EPSILON)
+	  printf("无根");
+  else
+	  printf("只有一个根为：%lf",-c/b);
+}
+else
+{
+delta=b*b-4*a*c;
+if(delta<0)
+  printf("无实数根");
+else
+{
+  delta=sqrt(delta);
+  x1=(-b+delta)/(2*a);
+  x2=(-b-delta)/(2*a);
+  printf("两个根为：%lf,%lf",x1,x2);
+}
+}
+}
