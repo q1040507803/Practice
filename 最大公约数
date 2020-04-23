@@ -1,0 +1,24 @@
+#include<stdio.h>
+int f(int u, int v);
+void main()
+{
+int u,v,f,t;
+printf("输入u与v：");
+scanf("%d %d",&u,&v);
+if(v>u)
+{
+t=v;
+v=u;
+u=t;
+}
+f=u*v;
+while(v)          
+{
+  int w=u%v;     
+  u=v;            
+  v=w;
+  printf("u=%d v=%d\n",u,v);
+}
+printf("\n最大公约数为：%d\n",u);
+printf("\n最小公倍数为：%d\n",f/u);
+}
