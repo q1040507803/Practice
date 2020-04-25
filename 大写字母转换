@@ -1,0 +1,8 @@
+#include<stdio.h>
+void main()
+{
+char cx;
+cx=getchar();
+cx=('A'<=cx&&cx<='Z'?cx+'a'-'A':cx);
+putchar(cx);
+}
