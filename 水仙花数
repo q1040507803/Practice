@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main()
+
+{
+
+printf("输出水仙花数：\n");
+
+int i=100;
+
+for( ; i<1000; i++){
+
+int num_0 = i%10;
+
+int num_1 = i/10%10;
+
+int num_2 = i/10/10%10;
+
+if(i==(num_0*num_0*num_0+num_1*num_1*num_1+num_2*num_2*num_2))
+
+printf("%d\t", i);
+
+}
+
+return 0;
+
+}
